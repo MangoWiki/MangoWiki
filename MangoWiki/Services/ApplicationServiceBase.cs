@@ -19,6 +19,9 @@ namespace MangoWiki.Services
         public int Interval { get; private set; }
         public string ExceptionMessage { get; private set; }
 
+        public IErrorLog ErrorLog { get; set; }
+        private IServiceHeartbeatService serviceHeartbeatService;
+
         protected ApplicationServiceBase()
         {
             Name = GetType().FullName;
@@ -28,7 +31,62 @@ namespace MangoWiki.Services
             _errorCount = 0;
             Interval = 1;
         }
+    
+        public virtual void Start(IServiceProvider serviceProvider)
+        {
+            ErrorLog = serviceProvider.GetService<IErrorLog>();
+            serviceHeartbeatService = serviceProvider.GetService<IServiceHeartbeatService>();
+            IsRunning = true;
+            TimerCallback callback = Execute;
+            Timer = new Timer(callback, this, Interval, Interval);
+        }
 
+        public void Execute(object sender)
+        {
+            var interval = GetInterval();
+            if (interval != Interval)
+            {
+                Interval = interval;
+                Timer.Change(0, interval);
+            }
 
+            if (IsRunning)
+            {
+                var isError = false;
+                try
+                {
+                    LastExecutionTime = DateTime.UtcNow;
+                    ServiceAction();
+                    serviceHeartbeatService.RecordHeartbeat(Name, Environment.MachineName);
+                }
+                catch(Exception exc)
+                {
+                    isError = true;
+                    _errorCount++;
+                    ErrorLog.Log(exc, ErrorSeverity.Error);
+                    ExceptionMessage = exc.Message + "\r\n" + exc.StackTrace;
+                }
+
+                if (isError && _errorCount >= 10)
+                {
+                    Stop();
+                } else if (!isError)
+                {
+                    _errorCount = 0;
+                    ExceptionMessage = String.Empty;
+                }
+            }
+        }
+
+        public void Stop()
+        {
+            IsRunning = false;
+        }
+
+        public void Dispose()
+        {
+            var e = new Exception(String.Format("Service {0} was disposed of at {1} UTC.", Name, DateTime.UtcNow));
+            ErrorLog.Log(e, ErrorSeverity.Warning);
+        }
     }
 }

@@ -1,0 +1,19 @@
+﻿using System;
+namespace MangoWiki.Configuration
+{
+    public class ErrorLogException : Exception
+    {
+        public ErrorLogException(string message) : base(message)
+        {
+
+        }
+
+        public override string Message
+        {
+            get
+            {
+                return "Can't log exception: " + base.Message;
+            }
+        }
+    }
+}

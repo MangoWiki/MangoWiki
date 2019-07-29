@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MangoWiki.Configuration;
+using MangoWiki.Services;
 
 namespace MangoWiki.Extensions
 {
@@ -9,12 +10,20 @@ namespace MangoWiki.Extensions
         {
             // Config
             services.AddTransient<IConfig, Config>();
+            services.AddTransient<IErrorLog, ErrorLog>();
+            services.AddTransient<ISettingsManager, SettingsManager>();
+
+            // email
+
+            // services
+            services.AddTransient<IRepositoryService, RepositoryService>();
+            services.AddTransient<ISetupService, SetupService>();
         }
 
         public static void AddMangoWikiBackgroundServices(this IServiceCollection services)
         {
             var serviceProvider = services.BuildServiceProvider();
-
+            BackgroundServices.SetupServices(serviceProvider, services);
         }
     }
 }
