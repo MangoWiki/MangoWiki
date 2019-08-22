@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MangoWiki.Models;
 
-namespace MangoWiki.Sql
+namespace MangoWiki.Data
 {
     public class MangoWikiIdentityContext : IdentityDbContext<MangoWikiUser>
     {

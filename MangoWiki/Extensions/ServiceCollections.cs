@@ -13,8 +13,8 @@ namespace MangoWiki.Extensions
             services.AddTransient<IErrorLog, ErrorLog>();
             services.AddTransient<ISettingsManager, SettingsManager>();
 
-
             // email
+
 
             // services
             services.AddTransient<IRepositoryService, RepositoryService>();
