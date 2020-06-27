@@ -1,12 +1,10 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using MangoWiki.Sql;
 using MangoWiki.Configuration;
 using MangoWiki.Models;
+using MangoWiki.Data;
 
 namespace MangoWiki.Services
 {
@@ -45,6 +43,7 @@ namespace MangoWiki.Services
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
                 options.Lockout.MaxFailedAccessAttempts = 5; // error on side of caution
             });
+
         }
     }
 }

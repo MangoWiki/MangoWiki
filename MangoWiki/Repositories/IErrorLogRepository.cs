@@ -9,7 +9,7 @@ namespace MangoWiki.Repositories
     {
         ErrorLogEntry Create(DateTime dateTime, string message, string stackTrace, string data, ErrorSeverity severity);
         int GetErrorCount();
-        List<ErrorLogEntry> GetErrors(int startRow, int pageSize);
+        List<ErrorLogEntry> GetErrors();
         void DeleteError(int errorID);
         void DeleteAllErrors();
     }

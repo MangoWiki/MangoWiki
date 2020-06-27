@@ -8,10 +8,16 @@ namespace MangoWiki.Data
 
         public MangoWikiDbContext(DbContextOptions<MangoWikiDbContext> options) : base(options)
         {
-
         }
 
         public DbSet<ErrorLogEntry> ErrorLogs { get; set; }
-        
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<ErrorLogEntry>();
+        }
+
     }
 }

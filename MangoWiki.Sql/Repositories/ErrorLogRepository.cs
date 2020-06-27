@@ -18,7 +18,7 @@ namespace MangoWiki.Sql.Repositories
             this._dbContext = dbContext;
         }
 
-        public async Task<ErrorLogEntry> Create(DateTime timeStamp, string message, string stackTrace, string data, ErrorSeverity severity)
+        public ErrorLogEntry Create(DateTime timeStamp, string message, string stackTrace, string data, ErrorSeverity severity)
         {
             var errorLog = new ErrorLogEntry
             {
@@ -30,7 +30,7 @@ namespace MangoWiki.Sql.Repositories
             };
 
 
-            await _dbContext.AddAsync(errorLog);
+             _dbContext.Add(errorLog);
             return errorLog;
         }
 
@@ -39,15 +39,23 @@ namespace MangoWiki.Sql.Repositories
             return _dbContext.ErrorLogs.Count();
         }
 
-        public async Task<List<ErrorLogEntry>> GetErrors(int startRow, int pageSize)
+        public List<ErrorLogEntry> GetErrors()
         {
-               
+            return _dbContext.ErrorLogs.ToList();
         }
 
-        public async Task DeleteError(int errorId)
+        public void DeleteError(int errorId)
         {
-
+            ErrorLogEntry error = _dbContext.ErrorLogs.Where(enity => enity.ID == errorId).First();
+            _dbContext.Remove(error);
         }
 
+        public void DeleteAllErrors()
+        {
+           foreach (ErrorLogEntry error in _dbContext.ErrorLogs.ToList())
+           {
+                _dbContext.Remove(error);
+           }
+        }
     }
 }

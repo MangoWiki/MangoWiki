@@ -12,5 +12,8 @@
     <ProjectReference Include="..\MangoWiki\MangoWiki.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+    <ProjectReference Include="..\MangoWiki.Sql\MangoWiki.Sql.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
 </Project>

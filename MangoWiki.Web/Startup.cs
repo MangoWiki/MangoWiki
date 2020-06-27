@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MangoWiki.Configuration;
 using MangoWiki.Extensions;
+using MangoWiki.Sql;
 
 namespace MangoWiki.Web
 {
@@ -34,7 +35,8 @@ namespace MangoWiki.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMangoWikiBase();
+            services.AddMangoWikiConfig();
+            services.AddMangoWikiDatabase();
 
             services.AddControllersWithViews();
             services.AddRazorPages();

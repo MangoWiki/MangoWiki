@@ -72,7 +72,7 @@ namespace MangoWiki.Configuration
         public List<ErrorLogEntry> GetErrors(int pageIndex, int pageSize, out PagerContext pagerContext)
         {
             var startRow = ((pageIndex - 1) * pageSize) + 1;
-            var errors = _errorLogRepository.GetErrors(startRow, pageSize);
+            var errors = _errorLogRepository.GetErrors();
             var errorCount = _errorLogRepository.GetErrorCount();
             var totalPages = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(errorCount) / Convert.ToDouble(pageSize)));
             pagerContext = new PagerContext { PageCount = totalPages, PageIndex = pageIndex, PageSize = pageSize };
